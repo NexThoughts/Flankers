@@ -15,7 +15,7 @@ class EmailVerticle extends AbstractVerticle {
     @Override
     void start(Future<Void> startFuture) throws Exception {
 
-        vertx.eventBus().consumer("emailAddress", { message ->
+        vertx.eventBus().consumer("emailShooter", { message ->
             Map emailMap = message.body() as Map
             MailConfig config = new MailConfig()
             config.hostname = "smtp.gmail.com"
@@ -36,8 +36,6 @@ class EmailVerticle extends AbstractVerticle {
                 void handle(AsyncResult<MailResult> mailEvent) {
                     if (mailEvent.succeeded()) {
                         System.out.println(mailEvent.result())
-                        //save data to mongodb
-                        vertx.eventBus().send("mongoAddress", message.body().toString())
                     } else if (mailEvent.failed()) {
                         mailEvent.cause().printStackTrace()
                     }

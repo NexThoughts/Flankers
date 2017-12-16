@@ -2,7 +2,6 @@ package com.verticle
 
 import com.model.Notification
 import com.model.User
-import com.services.BootstrapService
 import com.utils.Enums
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.MultiMap
