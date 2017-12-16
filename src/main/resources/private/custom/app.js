@@ -1,6 +1,30 @@
 $(document).ready(function () {
     loadTodo();
+    populateUserCount();
+    populateTodoCount();
 });
+
+function populateUserCount() {
+    $.ajax({
+        type: 'GET',
+        url: "http://localhost:8085/users/count"
+    }).done(function (response) {
+        $("#userCount").html(response);
+    }).fail(function () {
+        alert("Something is wrong")
+    });
+}
+
+function populateTodoCount() {
+    $.ajax({
+        type: 'GET',
+        url: "http://localhost:8085/todo/count"
+    }).done(function (response) {
+        $("#todoCount").html(response);
+    }).fail(function () {
+        alert("Something is wrong")
+    });
+}
 
 function loadTodo() {
     console.log("///////////////////////");
@@ -16,7 +40,7 @@ function loadTodo() {
                 "data": "id",
                 "render": function (data, type, row, meta) {
                     if (type === 'display') {
-                        data = '<a href="javascript:void(0)" onclick="updateTodo()">' + data + '</a>';
+                        data = '<a href="javascript:void(0)" onclick="updateTodo(' + data + ')">' + data + '</a>';
                     }
                     return data
                 }
@@ -27,4 +51,8 @@ function loadTodo() {
             {"data": "deadLineDate"}
         ]
     })
+}
+
+function updateTodo(todoId) {
+
 }

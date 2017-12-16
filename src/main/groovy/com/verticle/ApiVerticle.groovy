@@ -4,6 +4,7 @@ import com.model.Notification
 import com.model.User
 import com.utils.Enums
 import io.vertx.core.AbstractVerticle
+import io.vertx.core.http.HttpHeaders
 import io.vertx.core.http.HttpMethod
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
@@ -37,17 +38,35 @@ class ApiVerticle extends AbstractVerticle {
         vertx.deployVerticle(new TodoVerticle())
         vertx.deployVerticle(new CommentVerticle())
 
-//        router.get("/users").handler(this.&fetchAllUsers)
+        router.get("/users").handler(this.&fetchAllUsers)
         router.route("/users*").handler(BodyHandler.create())
         router.post("/users").handler(this.&addUser)
         router.post("/deleteUser").handler(this.&deleteUser)
-//        router.get("/users/count").handler(this.&fetchUsersCount)
-//        router.get("/users/:id").handler(this.&fetchSingleUser)
-//        router.put("/users/:id").handler(this.&updateUser)
-//        router.delete("/users/:id").handler(this.&deleteUser)
+        router.get("/users/count").handler(this.&fetchUsersCount)
+        router.get("/users/:id").handler(this.&fetchSingleUser)
+        router.put("/users/:id").handler(this.&updateUser)
+        router.delete("/users/:id").handler(this.&deleteUser)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
+    }
 
-
+    void updateUser(RoutingContext routingContext) {
+        String id = routingContext.request().getParam("id")
+        JsonObject json = routingContext.getBodyAsJson()
+        if (id == null || json == null) {
+            routingContext.response().setStatusCode(400).end()
+        } else {
+            mongoClient.update("users", new JsonObject().put("_id", id), new JsonObject().put("$set", json), { v ->
+                if (v.failed()) {
+                    routingContext.response().setStatusCode(404).end()
+                } else {
+//                    User user = new User(id, json.getString("email"), json.getString("password"), json.getString("firstname"), json.getString("lastname"), json.getLong("age"), json.getString("location"), json.getString("gender"))
+                    User user = null
+                    routingContext.response()
+                            .putHeader("content-type", "application/json; charset=utf-8")
+                            .end(Json.encodePrettily(user))
+                }
+            })
+        }
     }
 
     Boolean saveInCollection(String collectionName, JsonObject jsonObject, RoutingContext routingContext) {
@@ -110,6 +129,70 @@ class ApiVerticle extends AbstractVerticle {
         })
 
     }
+
+    void fetchUsersCount(RoutingContext routingContext) {
+        println("/////////////////////////")
+        println("/////////////////////////")
+        println("/////////////////////////")
+        println("/////////////////////////")
+        println("/////////////////////////")
+        mongoClient.count("users", new JsonObject(), { res ->
+            if (res.succeeded()) {
+                long num = res.result()
+                routingContext
+                        .response()
+                        .setStatusCode(201)
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .end(Json.encode(num))
+            } else {
+                routingContext.fail(res.cause())
+            }
+        })
+    }
+
+    void fetchSingleUser(RoutingContext routingContext) {
+        String id = routingContext.request().getParam("id")
+        if (!id) {
+            routingContext.response().setStatusCode(400).end()
+        } else {
+            mongoClient.findOne("users", new JsonObject().put("_id", id), null, { ar ->
+                if (ar.succeeded()) {
+                    if (ar.result() == null) {
+                        routingContext.response().setStatusCode(404).end()
+                        return
+                    }
+                    User user = new User(ar.result())
+                    routingContext.response()
+                            .setStatusCode(200)
+                            .putHeader("content-type", "application/json; charset=utf-8")
+                            .end(Json.encodePrettily(user))
+                } else {
+                    routingContext.response().setStatusCode(404).end()
+                }
+            })
+        }
+    }
+
+    void fetchAllUsers(RoutingContext routingContext) {
+        println("(((((((())))))))))))))))))))))))))))))))))))")
+        mongoClient.find("users", new JsonObject(), { lookup ->
+            if (lookup.failed()) {
+                routingContext.fail(lookup.cause())
+                return
+            }
+
+            List<JsonObject> jsonObjectList = lookup.result()
+            List<User> users = []
+
+            jsonObjectList.each {
+                users.add(new User(it))
+            }
+            routingContext.response()
+                    .putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .end(Json.encodePrettily(users))
+        })
+    }
+
 
     public void stop() throws Exception {
         mongoClient.close()
