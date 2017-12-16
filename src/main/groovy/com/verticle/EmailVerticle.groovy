@@ -26,9 +26,9 @@ class EmailVerticle extends AbstractVerticle {
             MailClient mailClient = MailClient.createNonShared(vertx, config)
 
             MailMessage mailMessage = new MailMessage()
-            mailMessage.subject = emailMap.get("subject")
+            mailMessage.subject = emailMap.get("emailSubject")
             mailMessage.from = "user@nexthoughts.com"
-            mailMessage.to = emailMap.get("to")
+            mailMessage.to = emailMap.get("sendTo")
             mailMessage.html = "this is html text <a href=\"http://vertx.io\">vertx.io</a>"
 
             mailClient.sendMail(mailMessage, new Handler<AsyncResult<MailResult>>() {
@@ -37,6 +37,7 @@ class EmailVerticle extends AbstractVerticle {
                     if (mailEvent.succeeded()) {
                         System.out.println(mailEvent.result())
                         //save data to mongodb
+                        vertx.eventBus().send("mongoAddress", message.body().toString())
                     } else if (mailEvent.failed()) {
                         mailEvent.cause().printStackTrace()
                     }
