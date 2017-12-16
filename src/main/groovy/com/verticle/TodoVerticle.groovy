@@ -96,7 +96,7 @@ class TodoVerticle extends AbstractVerticle {
     }
 
     void fetchSingleTodo(RoutingContext routingContext) {
-
+        
     }
 
     void stop() {

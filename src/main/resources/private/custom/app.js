@@ -12,7 +12,15 @@ function loadTodo() {
             'contentType': 'application/json'
         },
         columns: [
-            {"data": "id"},
+            {
+                "data": "id",
+                "render": function (data, type, row, meta) {
+                    if (type === 'display') {
+                        data = '<a href="javascript:void(0)" onclick="updateTodo()">' + data + '</a>';
+                    }
+                    return data
+                }
+            },
             {"data": "title"},
             {"data": "createdBy"},
             {"data": "assignedTo"},
