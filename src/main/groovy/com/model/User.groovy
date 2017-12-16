@@ -3,7 +3,7 @@ package com.model
 import io.vertx.core.json.JsonObject
 
 class User {
-    String uuid
+    String uuid = UUID.randomUUID()
     String dateCreated
 
 

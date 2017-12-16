@@ -1,67 +1,68 @@
 package com.verticle
 
-import com.Config
+import com.model.Comment
 import io.vertx.core.AbstractVerticle
-import io.vertx.core.http.HttpMethod
-import io.vertx.core.json.JsonObject
+import io.vertx.core.json.Json
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
-import io.vertx.ext.web.handler.CorsHandler
 
 class CommentVerticle extends AbstractVerticle {
 
     MongoClient mongoClient = null
+    Router router = null
 
     void start() {
-        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", Config.dbName))
-
-        Router router = Router.router(vertx)
-
-        router.route().handler(CorsHandler.create("*")
-                .allowedMethod(HttpMethod.POST)
-                .allowedMethod(HttpMethod.DELETE)
-                .allowedMethod(HttpMethod.GET)
-                .allowedMethod(HttpMethod.OPTIONS)
-                .allowedHeader("X-PINGARUNER")
-                .allowedHeader("Content-Type"))
-
-
-        vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
+        mongoClient = ApiVerticle.mongoClient
+        router = ApiVerticle.router
+        createRouteForcomment(router)
     }
 
-    void createRouteForUser(Router router) {
-        router.get("/users").handler(this.&fetchAllUsers)
-        router.route("/users*").handler(BodyHandler.create())
-        router.post("/users").handler(this.&addUser)
-        router.get("/users/count").handler(this.&fetchUsersCount)
-        router.get("/users/:id").handler(this.&fetchSingleUser)
-        router.put("/users/:id").handler(this.&updateUser)
-        router.delete("/users/:id").handler(this.&deleteUser)
+    void createRouteForcomment(Router router) {
+        router.route("/comments*").handler(BodyHandler.create())
+        router.get("/comments").handler(this.&fetchAllComments)
+        router.post("/comments").handler(this.&addComment)
+        router.get("/comments/count").handler(this.&fetchCommentsCount)
+        router.get("/comments/:id").handler(this.&fetchSingleComment)
+        router.put("/comments/:id").handler(this.&updateComment)
+        router.delete("/comments/:id").handler(this.&deleteComment)
     }
 
-    void deleteUser(RoutingContext routingContext) {
+    void deleteComment(RoutingContext routingContext) {
 
     }
 
-    void addUser(RoutingContext routingContext) {
+    void addComment(RoutingContext routingContext) {
+        println("...................................................")
+        Comment comment = Json.decodeValue(routingContext.getBodyAsString(), Comment.class)
+        mongoClient.insert("comments", comment.jsonObject(), { res ->
+            if (res.failed()) {
+                routingContext.fail(res.cause())
+            }
+
+            comment.id = res.result()
+            routingContext.response()
+                    .setStatusCode(201)
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .end(Json.encodePrettily(comment))
+        })
 
     }
 
-    void fetchUsersCount(RoutingContext routingContext) {
+    void fetchCommentsCount(RoutingContext routingContext) {
 
     }
 
-    void fetchAllUsers(RoutingContext routingContext) {
+    void fetchAllComments(RoutingContext routingContext) {
 
     }
 
-    void updateUser(RoutingContext routingContext) {
+    void updateComment(RoutingContext routingContext) {
 
     }
 
-    void fetchSingleUser(RoutingContext routingContext) {
+    void fetchSingleComment(RoutingContext routingContext) {
 
     }
 
