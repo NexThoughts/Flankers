@@ -36,6 +36,7 @@ class ApiVerticle extends AbstractVerticle {
 
         vertx.deployVerticle(new TodoVerticle())
         vertx.deployVerticle(new CommentVerticle())
+        vertx.deployVerticle(new TagVerticle())
 
         router.get("/users").handler(this.&fetchAllUsers)
         router.route("/users*").handler(BodyHandler.create())
