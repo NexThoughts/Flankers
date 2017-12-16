@@ -3,8 +3,9 @@ package com.model
 import io.vertx.core.json.JsonObject
 
 class User {
-    String uuid = UUID.randomUUID()
+    String uuid = UUID.randomUUID().toString()
     String dateCreated
+    String _id
 
 
     String id
@@ -34,15 +35,20 @@ class User {
     }
 
     User(JsonObject object) {
-        this.email = object.getString("email")
-        this.password = object.getString("password")
-        this.firstname = object.getString("firstname")
-        this.lastname = object.getString("lastname")
-        this.dateOfBirth = dateOfBirth
-        this.location = object.getString("location")
-        this.gender = object.getString("gender")
-        this.dateCreated = object.getString("dateCreated")
-        this.uuid = object.getString("uuid")
+        if (object) {
+
+            println "HERE"
+            this.email = object.getString("email")
+            this.password = object.getString("password")
+            this.firstname = object.getString("firstname")
+            this.lastname = object.getString("lastname")
+            this.dateOfBirth = dateOfBirth
+            this.location = object.getString("location")
+            this.gender = object.getString("gender")
+            this.dateCreated = object.getString("dateCreated")
+            this.uuid = object.getString("uuid")
+            this.id = object.getString("id")
+        }
     }
 
     User(String id, String email, String password, String firstname, String lastname, String dateOfBirth, String location, String gender) {
@@ -78,7 +84,7 @@ class User {
     }
 
     String getFullName() {
-        this.firstname ?: '' + this.lastname ?: ''
+        "${this.firstname ?: ''} ${this.lastname ?: ''}"
     }
 
 }

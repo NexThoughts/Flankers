@@ -5,7 +5,7 @@ import io.vertx.core.json.JsonObject
 class Tag {
 
     String dateCreated
-    String uuid
+    String uuid = UUID.randomUUID().toString()
 
     String id
 
