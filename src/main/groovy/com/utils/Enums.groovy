@@ -12,6 +12,9 @@ class Enums {
         SMS,EMAIL
     }
 
+    public enum EmailCategory {
+        REGISTRATION
+    }
 
     public enum test {
         XYZ('xyz')
