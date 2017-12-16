@@ -1,8 +1,9 @@
 package com.verticle
 
-import com.Config
+import com.model.Tag
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpMethod
+import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
@@ -13,12 +14,11 @@ import io.vertx.ext.web.handler.CorsHandler
 class TagVerticle extends AbstractVerticle {
 
     MongoClient mongoClient = null
+    Router router = null
 
     void start() {
-        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", Config.dbName))
-
-        Router router = Router.router(vertx)
-
+        mongoClient = ApiVerticle.mongoClient
+        router = ApiVerticle.router
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.POST)
                 .allowedMethod(HttpMethod.DELETE)
@@ -27,30 +27,66 @@ class TagVerticle extends AbstractVerticle {
                 .allowedHeader("X-PINGARUNER")
                 .allowedHeader("Content-Type"))
 
-
+        createRouteForTag(router)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
-    }
-
-    void createRouteForUser(Router router) {
-        router.get("/users").handler(this.&fetchAllUsers)
-        router.route("/users*").handler(BodyHandler.create())
-        router.post("/users").handler(this.&addUser)
-        router.get("/users/count").handler(this.&fetchUsersCount)
-        router.get("/users/:id").handler(this.&fetchSingleUser)
-        router.put("/users/:id").handler(this.&updateUser)
-        router.delete("/users/:id").handler(this.&deleteUser)
-    }
-
-    void deleteUser(RoutingContext routingContext) {
 
     }
 
-    void addUser(RoutingContext routingContext) {
+    void createRouteForTag(Router router) {
+        router.route("/tags*").handler(BodyHandler.create())
+        router.get("/tags").handler(this.&fetchAllUsers)
+        router.post("/tags").handler(this.&addTag)
+        router.get("/tags/count").handler(this.&fetchTagsCount)
+        router.get("/tags/:id").handler(this.&fetchSingleUser)
+        router.put("/tags/:id").handler(this.&updateUser)
+        router.delete("/tags/:id").handler(this.&deleteTags)
+    }
+
+    void deleteTags(RoutingContext routingContext) {
+        println("**************IN Tag Delete Method *****************")
+        mongoClient.removeOne("tag", new JsonObject().put("uuid", routingContext.request().getParam("id")), { lookup ->
+            if (lookup.failed()) {
+                routingContext.fail(lookup.cause())
+                return
+            }
+
+            routingContext.response().setStatusCode(204)
+            routingContext.response().end()
+        })
 
     }
 
-    void fetchUsersCount(RoutingContext routingContext) {
+    void addTag(RoutingContext routingContext) {
+        println("**************IN Tag Add Method *****************")
+        Tag tag = Json.decodeValue(routingContext.getBodyAsString(), Tag.class)
+        println("tagggg" + tag)
+        println("tagggg" + tag)
+        println("tagggg" + tag)
 
+        mongoClient.insert("tag", tag.jsonObject(), { handeller ->
+            if (handeller.failed()) {
+                routingContext.fail(handeller.cause())
+            }
+            tag.id = handeller.result()
+            routingContext.response().setStatusCode(201).putHeader("content-type", "application/json; charset=utf-8")
+                    .end(Json.encodePrettily(tag))
+        })
+
+    }
+
+    void fetchTagsCount(RoutingContext routingContext) {
+        mongoClient.count("tags", new JsonObject(), { res ->
+            if (res.succeeded()) {
+                long num = res.result()
+                routingContext
+                        .response()
+                        .setStatusCode(201)
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .end(Json.encode(num))
+            } else {
+                routingContext.fail(res.cause())
+            }
+        })
     }
 
     void fetchAllUsers(RoutingContext routingContext) {
