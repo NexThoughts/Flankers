@@ -1,20 +1,13 @@
-import com.model.Notification
+package com
 
-import com.utils.Enums
-import groovy.json.JsonBuilder
-import io.vertx.core.Vertx
+import com.verticle.ApiVerticle
 import com.verticle.EmailVerticle
-import io.vertx.core.json.JsonObject
+import io.vertx.core.Vertx
 
 class Main {
-    static void main(String[] args) {
-
-        EmailVerticle emailVerticle = new EmailVerticle()
+    public static void main(String[] args) {
         Vertx vertx = Vertx.vertx()
+        vertx.deployVerticle(new ApiVerticle())
         vertx.deployVerticle(new EmailVerticle())
-        Thread.sleep(300)
-        Notification notification = new Notification(type: Enums.NotificationType.EMAIL.toString(), message: "", emailSubject: Enums.EmailCategory.REGISTRATION.toString(), sendTo: "puneetmungali93@gmail.com", status: Enums.NotificationStatus.PENDING.toString())
-        JsonObject emailJsonObject = new JsonObject(new JsonBuilder(notification).toPrettyString())
-        vertx.eventBus().send("emailAddress", emailJsonObject)
     }
 }

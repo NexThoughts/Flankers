@@ -4,8 +4,6 @@ import com.model.Notification
 import com.model.User
 import com.utils.Enums
 import io.vertx.core.AbstractVerticle
-import io.vertx.core.MultiMap
-import io.vertx.core.http.HttpHeaders
 import io.vertx.core.http.HttpMethod
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
@@ -15,20 +13,19 @@ import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.handler.CorsHandler
 
-
 class ApiVerticle extends AbstractVerticle {
 
-    MongoClient mongoClient = null
+    static MongoClient mongoClient = null
+    static Router router = null
 
     @Override
     public void start() throws Exception {
-        System.out.println("############### Starting Mongo Verticle ###################");
+        System.out.println("############### Starting Mongo Verticle ###################")
         String dbName = "flanker"
 
         mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", dbName))
 
-
-        Router router = Router.router(vertx)
+        router = Router.router(vertx)
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.POST)
                 .allowedMethod(HttpMethod.DELETE)
@@ -36,6 +33,8 @@ class ApiVerticle extends AbstractVerticle {
                 .allowedMethod(HttpMethod.OPTIONS)
                 .allowedHeader("X-PINGARUNER")
                 .allowedHeader("Content-Type"))
+
+        vertx.deployVerticle(new CommentVerticle())
 
 //        router.get("/users").handler(this.&fetchAllUsers)
         router.route("/users*").handler(BodyHandler.create())
@@ -64,7 +63,7 @@ class ApiVerticle extends AbstractVerticle {
 
 
     void addUser(RoutingContext routingContext) {
-        System.out.println("******************** Adding User ********************");
+        System.out.println("******************** Adding User ********************")
 
         User user = Json.decodeValue(routingContext.getBodyAsString(), User.class)
 
@@ -91,13 +90,11 @@ class ApiVerticle extends AbstractVerticle {
 
         saveInCollection("notification", notification.jsonObject(), routingContext)
 
-        vertx.eventBus().publish("emailShooter", notification.jsonObject());
-
-
+        vertx.eventBus().publish("emailShooter", notification.jsonObject())
     }
 
 //    void sendNotification(Notification notification) {
-//        vertx.eventBus().publish("emailShooter", notification.jsonObject());
+//        vertx.eventBus().publish("emailShooter", notification.jsonObject())
 //    }
 
     void deleteUser(RoutingContext routingContext) {

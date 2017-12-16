@@ -4,11 +4,7 @@ import io.vertx.core.AbstractVerticle
 import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
-import io.vertx.ext.mail.MailClient
-import io.vertx.ext.mail.MailConfig
-import io.vertx.ext.mail.MailMessage
-import io.vertx.ext.mail.MailResult
-import io.vertx.ext.mail.StartTLSOptions
+import io.vertx.ext.mail.*
 
 class EmailVerticle extends AbstractVerticle {
 

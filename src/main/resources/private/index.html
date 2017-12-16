@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Flankers | Vertx Demo</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description"
+          content="Gradient Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs."/>
+    <meta name="keywords"
+          content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive"/>
+    <meta name="author" content="codedthemes"/>
+
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css">
+
+    <link rel="stylesheet" href="assets/pages/chart/radial/css/radial.css" type="text/css" media="all">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script type="text/javascript" src="assets/jquery/js/jquery.min.js "></script>
+    <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js "></script>
+
+    <script type="text/javascript" src="assets/js/SmoothScroll.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+
+    <script src="assets/js/pcoded.min.js"></script>
+    <script src="assets/js/vertical/vertical-layout.min.js "></script>
+    <script type="text/javascript" src="assets/js/script.js "></script>
+    <script type="text/javascript" src="custom/app.js"></script>
+</head>
+<body>
+
+<div class="theme-loader">
+    <div class="loader-track">
+        <div class="loader-bar"></div>
+    </div>
+</div>
+
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header">
+            <div class="navbar-wrapper">
+                <div class="navbar-logo">
+                    <a class="mobile-menu" id="mobile-collapse" href="#!">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <div class="mobile-search">
+                        <div class="header-search">
+                            <div class="main-search morphsearch-search">
+                                <div class="input-group">
+                                    <span class="input-group-addon search-close"><i class="fa fa-close"></i></span>
+                                    <input type="text" class="form-control" placeholder="Enter Keyword">
+                                    <span class="input-group-addon search-btn"><i class="fa fa-search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="index.html">
+                        <img class="img-fluid" src="assets/images/logo.png" alt="Theme-Logo"/>
+                    </a>
+                    <a class="mobile-options">
+                        <i class="fa fa-more"></i>
+                    </a>
+                </div>
+                <div class="navbar-container container-fluid">
+                    <ul class="nav-right">
+                        <li class="user-profile header-notification">
+                            <a href="#!">
+                                <img src="assets/images/avatar-4.jpg" class="img-radius"
+                                     alt="User-Profile-Image">
+                                <span>John Doe</span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <nav class="pcoded-navbar">
+                    <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+                    <div class="pcoded-inner-navbar main-menu">
+                        <div class="pcoded-navigation-label">Navigation</div>
+                        <ul class="pcoded-item pcoded-left-item">
+                            <li class="pcoded-hasmenu active pcoded-trigger">
+                                <a href="javascript:void(0)">
+                                    <span class="pcoded-micon"><i class="fa fa-home"></i><b>D</b></span>
+                                    <span class="pcoded-mtext">Dashboard</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class="active">
+                                        <a href="/">
+                                            <span class="pcoded-micon"><i class="fa fa-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Default</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="pcoded-submenu">
+                                    <li class="">
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#createComment">
+                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                            <span class="pcoded-mtext">Comment</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <div class="page-wrapper">
+
+                                <div class="page-body">
+                                    <div class="row">
+                                        <div class="col-md-6 col-xl-3">
+                                            <div class="card bg-c-blue order-card">
+                                                <div class="card-block">
+                                                    <h6 class="m-b-20">Orders Received</h6>
+                                                    <h2 class="text-right"><i
+                                                            class="fa fa-shopping-cart f-left"></i><span>486</span>
+                                                    </h2>
+                                                    <p class="m-b-0">Completed Orders<span class="f-right">351</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-xl-3">
+                                            <div class="card bg-c-green order-card">
+                                                <div class="card-block">
+                                                    <h6 class="m-b-20">Total Sales</h6>
+                                                    <h2 class="text-right"><i
+                                                            class="fa fa-tag f-left"></i><span>1641</span></h2>
+                                                    <p class="m-b-0">This Month<span class="f-right">213</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-xl-3">
+                                            <div class="card bg-c-yellow order-card">
+                                                <div class="card-block">
+                                                    <h6 class="m-b-20">Revenue</h6>
+                                                    <h2 class="text-right"><i
+                                                            class="fa fa-reload f-left"></i><span>$42,562</span></h2>
+                                                    <p class="m-b-0">This Month<span class="f-right">$5,032</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-xl-3">
+                                            <div class="card bg-c-pink order-card">
+                                                <div class="card-block">
+                                                    <h6 class="m-b-20">Total Profit</h6>
+                                                    <h2 class="text-right"><i
+                                                            class="fa fa-wallet f-left"></i><span>$9,562</span></h2>
+                                                    <p class="m-b-0">This Month<span class="f-right">$542</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="createComment" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

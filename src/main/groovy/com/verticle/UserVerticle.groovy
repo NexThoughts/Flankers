@@ -16,9 +16,15 @@ class UserVerticle extends AbstractVerticle {
 
     void start() {
         mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", Config.dbName))
+        JsonObject config = new JsonObject()
 
         Router router = Router.router(vertx)
+        createCORSSetting(router)
 
+        vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
+    }
+
+    void createCORSSetting(Router router) {
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.POST)
                 .allowedMethod(HttpMethod.DELETE)
@@ -26,9 +32,6 @@ class UserVerticle extends AbstractVerticle {
                 .allowedMethod(HttpMethod.OPTIONS)
                 .allowedHeader("X-PINGARUNER")
                 .allowedHeader("Content-Type"))
-
-
-        vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
     }
 
     void createRouteForUser(Router router) {
@@ -66,6 +69,6 @@ class UserVerticle extends AbstractVerticle {
     }
 
     void stop() {
-
+        mongoClient.close()
     }
 }
