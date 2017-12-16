@@ -36,7 +36,7 @@ class TagVerticle extends AbstractVerticle {
         router.route("/tags*").handler(BodyHandler.create())
         router.get("/tags").handler(this.&fetchAllUsers)
         router.post("/tags").handler(this.&addTag)
-        router.get("/tags/count").handler(this.&fetchUsersCount)
+        router.get("/tags/count").handler(this.&fetchTagsCount)
         router.get("/tags/:id").handler(this.&fetchSingleUser)
         router.put("/tags/:id").handler(this.&updateUser)
         router.delete("/tags/:id").handler(this.&deleteTags)
@@ -74,9 +74,19 @@ class TagVerticle extends AbstractVerticle {
 
     }
 
-    void fetchUsersCount(RoutingContext routingContext) {
-
-
+    void fetchTagsCount(RoutingContext routingContext) {
+        mongoClient.count("tags", new JsonObject(), { res ->
+            if (res.succeeded()) {
+                long num = res.result()
+                routingContext
+                        .response()
+                        .setStatusCode(201)
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .end(Json.encode(num))
+            } else {
+                routingContext.fail(res.cause())
+            }
+        })
     }
 
     void fetchAllUsers(RoutingContext routingContext) {

@@ -70,7 +70,6 @@ class ApiVerticle extends AbstractVerticle {
     }
 
     Boolean saveInCollection(String collectionName, JsonObject jsonObject, RoutingContext routingContext) {
-
         boolean success = true
         mongoClient.insert(collectionName, jsonObject, { lookup ->
             if (lookup.failed()) {
@@ -80,7 +79,6 @@ class ApiVerticle extends AbstractVerticle {
         })
         success
     }
-
 
     void addUser(RoutingContext routingContext) {
         System.out.println("******************** Adding User ********************")
@@ -113,10 +111,6 @@ class ApiVerticle extends AbstractVerticle {
         vertx.eventBus().publish("emailShooter", notification.jsonObject())
     }
 
-//    void sendNotification(Notification notification) {
-//        vertx.eventBus().publish("emailShooter", notification.jsonObject())
-//    }
-
     void deleteUser(RoutingContext routingContext) {
         mongoClient.removeOne("user", new JsonObject().put("uuid", routingContext.request().getParam("id")), { lookup ->
             if (lookup.failed()) {
@@ -127,15 +121,9 @@ class ApiVerticle extends AbstractVerticle {
             routingContext.response().setStatusCode(204)
             routingContext.response().end()
         })
-
     }
 
     void fetchUsersCount(RoutingContext routingContext) {
-        println("/////////////////////////")
-        println("/////////////////////////")
-        println("/////////////////////////")
-        println("/////////////////////////")
-        println("/////////////////////////")
         mongoClient.count("users", new JsonObject(), { res ->
             if (res.succeeded()) {
                 long num = res.result()
@@ -195,11 +183,8 @@ class ApiVerticle extends AbstractVerticle {
         })
     }
 
-
     public void stop() throws Exception {
         mongoClient.close()
 
     }
-
-
 }

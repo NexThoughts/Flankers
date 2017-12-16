@@ -2,6 +2,7 @@ $(document).ready(function () {
     loadTodo();
     loadUsers();
     loadComments();
+    populateTagCount();
     populateUserCount();
     populateTodoCount();
     populateCommentCount();
@@ -35,6 +36,17 @@ function populateTodoCount() {
         url: "http://localhost:8085/todo/count"
     }).done(function (response) {
         $("#todoCount").html(response);
+    }).fail(function () {
+        alert("Something is wrong")
+    });
+}
+
+function populateTagCount() {
+    $.ajax({
+        type: 'GET',
+        url: "http://localhost:8085/tags/count"
+    }).done(function (response) {
+        $("#tagCount").html(response);
     }).fail(function () {
         alert("Something is wrong")
     });
