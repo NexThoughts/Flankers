@@ -1,5 +1,6 @@
 package com.verticle
 
+import com.Config
 import com.model.Notification
 import com.model.User
 import com.utils.Enums
@@ -22,9 +23,7 @@ class ApiVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         System.out.println("############### Starting Mongo Verticle ###################")
-        String dbName = "flanker"
-
-        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", dbName))
+        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", Config.dbName))
 
         router = Router.router(vertx)
         router.route().handler(CorsHandler.create("*")
@@ -187,6 +186,8 @@ class ApiVerticle extends AbstractVerticle {
             jsonObjectList.each {
                 users.add(new User(it))
             }
+
+            println(users)
             routingContext.response()
                     .putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                     .end(Json.encodePrettily(users))
