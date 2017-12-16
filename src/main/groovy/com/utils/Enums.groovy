@@ -12,6 +12,10 @@ class Enums {
         SMS,EMAIL
     }
 
+    public enum NotificationEvent {
+        USER_SIGNUP
+    }
+
 
     public enum test {
         XYZ('xyz')

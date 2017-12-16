@@ -3,7 +3,7 @@ package com.model
 import io.vertx.core.json.JsonObject
 
 class User {
-    String uuid
+    String uuid = UUID.randomUUID()
     String dateCreated
 
 
@@ -75,6 +75,10 @@ class User {
         }
 
         return jsonObject
+    }
+
+    String getFullName() {
+        this.firstname ?: '' + this.lastname ?: ''
     }
 
 }
