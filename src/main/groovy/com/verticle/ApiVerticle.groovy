@@ -35,6 +35,7 @@ class ApiVerticle extends AbstractVerticle {
                 .allowedHeader("Content-Type"))
 
         vertx.deployVerticle(new CommentVerticle())
+        vertx.deployVerticle(new TagVerticle())
 
 //        router.get("/users").handler(this.&fetchAllUsers)
         router.route("/users*").handler(BodyHandler.create())

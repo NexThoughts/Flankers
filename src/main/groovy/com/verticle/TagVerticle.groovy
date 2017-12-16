@@ -1,8 +1,6 @@
 package com.verticle
 
-import com.Config
 import com.model.Tag
-import com.model.User
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpMethod
 import io.vertx.core.json.Json
@@ -16,12 +14,11 @@ import io.vertx.ext.web.handler.CorsHandler
 class TagVerticle extends AbstractVerticle {
 
     MongoClient mongoClient = null
+    Router router = null
 
     void start() {
-        mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", Config.dbName))
-
-        Router router = Router.router(vertx)
-        println("********Start************")
+        mongoClient = ApiVerticle.mongoClient
+        router = ApiVerticle.router
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.POST)
                 .allowedMethod(HttpMethod.DELETE)
@@ -30,7 +27,6 @@ class TagVerticle extends AbstractVerticle {
                 .allowedHeader("X-PINGARUNER")
                 .allowedHeader("Content-Type"))
 
-        println("********Start************")
         createRouteForTag(router)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
 
@@ -39,7 +35,7 @@ class TagVerticle extends AbstractVerticle {
     void createRouteForTag(Router router) {
         router.route("/tags*").handler(BodyHandler.create())
         router.get("/tags").handler(this.&fetchAllUsers)
-        router.post("/addTag").handler(this.&addTag)
+        router.post("/tags").handler(this.&addTag)
         router.get("/tags/count").handler(this.&fetchUsersCount)
         router.get("/tags/:id").handler(this.&fetchSingleUser)
         router.put("/tags/:id").handler(this.&updateUser)
