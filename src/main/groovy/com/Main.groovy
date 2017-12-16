@@ -1,6 +1,7 @@
 package com
 
 import com.verticle.ApiVerticle
+import com.verticle.EmailVerticle
 import io.vertx.core.Vertx
 
 class Main {
