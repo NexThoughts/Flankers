@@ -34,6 +34,7 @@ class ApiVerticle extends AbstractVerticle {
                 .allowedHeader("X-PINGARUNER")
                 .allowedHeader("Content-Type"))
 
+        vertx.deployVerticle(new TodoVerticle())
         vertx.deployVerticle(new CommentVerticle())
 
 //        router.get("/users").handler(this.&fetchAllUsers)
@@ -110,9 +111,8 @@ class ApiVerticle extends AbstractVerticle {
 
     }
 
-    @Override
     public void stop() throws Exception {
-
+        mongoClient.close()
 
     }
 

@@ -26,6 +26,14 @@
     <script type="text/javascript" src="assets/jquery/js/jquery.min.js "></script>
     <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js "></script>
 
+    <script src="assets/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="assets/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="assets/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="assets/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="assets/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="assets/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="assets/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
     <script type="text/javascript" src="assets/js/SmoothScroll.js"></script>
     <script type="text/javascript" src="assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
 
@@ -171,28 +179,64 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Todos</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="table-responsive dt-responsive">
+                                                <table id="dt-ajax-array"
+                                                       class="table table-striped table-bordered nowrap">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Created By</th>
+                                                        <th>Assigned To</th>
+                                                        <th>Deadline date</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Created By</th>
+                                                        <th>Assigned To</th>
+                                                        <th>Deadline date</th>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="createComment" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+            <div id="createComment" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
         </div>
     </div>
 </div>
