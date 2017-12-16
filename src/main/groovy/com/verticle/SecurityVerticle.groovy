@@ -16,6 +16,7 @@ class SecurityVerticle extends AbstractVerticle {
 
     MongoClient mongoClient = null
     MongoAuth authProvider
+    Router router = null
 
     void start() {
         mongoClient = MongoClient.createShared(vertx, new JsonObject().put("db_name", Config.dbName))
@@ -36,9 +37,7 @@ class SecurityVerticle extends AbstractVerticle {
             }
         })
 
-        Router router = Router.router(vertx)
-        createCORSSetting(router)
-
+        router = ApiVerticle.router
         router.route().handler(CookieHandler.create())
         router.route().handler(BodyHandler.create())
         router.route().handler(SessionHandler.create(LocalSessionStore.create(vertx)))
