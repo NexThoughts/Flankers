@@ -77,4 +77,8 @@ class User {
         return jsonObject
     }
 
+    String getFullName() {
+        this.firstname ?: '' + this.lastname ?: ''
+    }
+
 }

@@ -15,6 +15,7 @@ class Notification {
     String emailSubject
     String sendTo
     String status
+    String event
 
 
     Enums.NotificationType getNotificationType() {
@@ -29,8 +30,9 @@ class Notification {
         this.id = ""
     }
 
-    Notification(String type, String message, String emailSubject, String sendTo, String status) {
+    Notification(String type, String event, String message, String emailSubject, String sendTo, String status) {
         this.type = type
+        this.event = event
         this.message = message
         this.emailSubject = emailSubject
         this.sendTo = sendTo
@@ -54,9 +56,10 @@ class Notification {
 
     }
 
-    Notification(String id, String type, String message, String emailSubject, String sendTo, String status) {
+    Notification(String id, String type, String event, String message, String emailSubject, String sendTo, String status) {
         this.id = id
         this.type = type
+        this.event = event
         this.message = message
         this.emailSubject = emailSubject
         this.sendTo = sendTo

@@ -12,9 +12,10 @@ class Enums {
         SMS,EMAIL
     }
 
-    public enum EmailCategory {
-        REGISTRATION
+    public enum NotificationEvent {
+        USER_SIGNUP
     }
+
 
     public enum test {
         XYZ('xyz')
